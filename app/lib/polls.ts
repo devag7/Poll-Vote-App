@@ -94,7 +94,7 @@ export function createPoll(input: { question: unknown; options: unknown; type: u
     type === "rating"
       ? Array.from({ length: 5 }).map((_, index) => ({
           id: String(index + 1),
-          text: `${index + 1} Star${index === 0 ? "" : "s"}`,
+          text: `${index + 1} Star${index !== 0 ? "s" : ""}`,
           votes: 0,
           emoji: "⭐",
         }))

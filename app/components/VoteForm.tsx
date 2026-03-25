@@ -33,6 +33,7 @@ function launchConfetti() {
   const container = document.createElement("div");
   container.className = "pointer-events-none fixed inset-0 z-50 overflow-hidden";
   document.body.appendChild(container);
+  const viewportHeight = window.innerHeight;
 
   for (let i = 0; i < 50; i += 1) {
     const piece = document.createElement("span");
@@ -43,7 +44,7 @@ function launchConfetti() {
     piece.animate(
       [
         { transform: `translateY(-10px) rotate(0deg)`, opacity: 1 },
-        { transform: `translateY(${window.innerHeight + 20}px) rotate(${360 + Math.random() * 360}deg)`, opacity: 0.2 },
+        { transform: `translateY(${viewportHeight + 20}px) rotate(${360 + Math.random() * 360}deg)`, opacity: 0.2 },
       ],
       {
         duration: 900 + Math.random() * 900,
