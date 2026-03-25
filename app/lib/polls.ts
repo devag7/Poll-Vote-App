@@ -11,7 +11,16 @@ export type Poll = {
   createdAt: string;
 };
 
-const polls = new Map<string, Poll>();
+declare global {
+  // eslint-disable-next-line no-var
+  var __pollStore__: Map<string, Poll> | undefined;
+}
+
+const polls = globalThis.__pollStore__ ?? new Map<string, Poll>();
+
+if (!globalThis.__pollStore__) {
+  globalThis.__pollStore__ = polls;
+}
 
 const MAX_OPTIONS = 6;
 
