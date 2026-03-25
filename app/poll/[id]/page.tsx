@@ -4,27 +4,28 @@ import { getPoll, isPollExpired } from "@/app/lib/polls";
 import VoteForm from "@/app/components/VoteForm";
 
 type PollPageProps = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
 function getVoteCookieKey(pollId: string) {
   return `poll-voted-${pollId}`;
 }
 
-export default function PollPage({ params }: PollPageProps) {
-  const poll = getPoll(params.id);
+export default async function PollPage({ params }: PollPageProps) {
+  const { id } = await params;
+  const poll = getPoll(id);
 
   if (!poll) {
     notFound();
   }
 
-  const hasVoted = cookies().get(getVoteCookieKey(params.id))?.value === "1";
+  const hasVoted = (await cookies()).get(getVoteCookieKey(id))?.value === "1";
   const isExpired = isPollExpired(poll);
 
   if (hasVoted || isExpired) {
-    redirect(`/poll/${params.id}/results`);
+    redirect(`/poll/${id}/results`);
   }
 
   return (

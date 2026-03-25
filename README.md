@@ -1,6 +1,6 @@
 # Poll-Vote-App
 
-A Next.js 14 App Router demo app to create polls, vote, and view live results.
+A Next.js 15 App Router demo app to create polls, vote, and view live results.
 
 ## Features
 

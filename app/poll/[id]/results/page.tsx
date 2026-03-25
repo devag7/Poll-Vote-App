@@ -3,13 +3,14 @@ import { getPoll, getTotalVotes } from "@/app/lib/polls";
 import ResultsChart from "@/app/components/ResultsChart";
 
 type PollResultsPageProps = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
-export default function PollResultsPage({ params }: PollResultsPageProps) {
-  const poll = getPoll(params.id);
+export default async function PollResultsPage({ params }: PollResultsPageProps) {
+  const { id } = await params;
+  const poll = getPoll(id);
 
   if (!poll) {
     notFound();

@@ -1,14 +1,15 @@
 import { NextResponse } from "next/server";
 import { getPoll, getTotalVotes, isPollExpired } from "@/app/lib/polls";
 
-type Params = {
-  params: {
+type RouteContext = {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
-export async function GET(_: Request, { params }: Params) {
-  const poll = getPoll(params.id);
+export async function GET(_: Request, { params }: RouteContext) {
+  const { id } = await params;
+  const poll = getPoll(id);
 
   if (!poll) {
     return NextResponse.json({ error: "Poll not found" }, { status: 404 });

@@ -1,18 +1,18 @@
 import { NextResponse } from "next/server";
 import { getPoll, votePoll } from "@/app/lib/polls";
 
-type Params = {
-  params: {
+type RouteContext = {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
 function getVoteCookieKey(pollId: string) {
   return `poll-voted-${pollId}`;
 }
 
-export async function POST(request: Request, { params }: Params) {
-  const pollId = params.id;
+export async function POST(request: Request, { params }: RouteContext) {
+  const { id: pollId } = await params;
   const cookieStore = request.headers.get("cookie") ?? "";
   const voteCookieKey = getVoteCookieKey(pollId);
 
