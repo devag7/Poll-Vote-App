@@ -1,6 +1,6 @@
 import { notFound, redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import { getPoll } from "@/app/lib/polls";
+import { getPoll, isPollExpired } from "@/app/lib/polls";
 import VoteForm from "@/app/components/VoteForm";
 
 type PollPageProps = {
@@ -21,8 +21,9 @@ export default function PollPage({ params }: PollPageProps) {
   }
 
   const hasVoted = cookies().get(getVoteCookieKey(params.id))?.value === "1";
+  const isExpired = isPollExpired(poll);
 
-  if (hasVoted) {
+  if (hasVoted || isExpired) {
     redirect(`/poll/${params.id}/results`);
   }
 
@@ -31,9 +32,13 @@ export default function PollPage({ params }: PollPageProps) {
       <h1 className="mb-6 text-2xl font-bold text-slate-900">{poll.question}</h1>
       <VoteForm
         pollId={poll.id}
+        pollType={poll.type}
+        endAt={poll.endAt}
         options={poll.options.map((option) => ({
           id: option.id,
           text: option.text,
+          emoji: option.emoji,
+          imageUrl: option.imageUrl,
         }))}
       />
     </main>

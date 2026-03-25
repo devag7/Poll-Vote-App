@@ -7,6 +7,8 @@ export async function POST(request: Request) {
     const poll = createPoll({
       question: body?.question,
       options: body?.options,
+      type: body?.type,
+      endAt: body?.endAt,
     });
 
     return NextResponse.json({ id: poll.id }, { status: 201 });

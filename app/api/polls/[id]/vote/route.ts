@@ -28,9 +28,13 @@ export async function POST(request: Request, { params }: Params) {
 
   try {
     const body = await request.json();
-    const optionId = typeof body?.optionId === "string" ? body.optionId : "";
+    const optionIds = Array.isArray(body?.optionIds)
+      ? body.optionIds.filter((item: unknown): item is string => typeof item === "string")
+      : typeof body?.optionId === "string"
+        ? [body.optionId]
+        : [];
 
-    votePoll(pollId, optionId);
+    votePoll(pollId, optionIds);
 
     const response = NextResponse.json({ success: true });
     response.cookies.set(voteCookieKey, "1", {

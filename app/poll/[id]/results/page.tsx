@@ -26,10 +26,15 @@ export default function PollResultsPage({ params }: PollResultsPageProps) {
         initialData={{
           id: poll.id,
           question: poll.question,
+          type: poll.type,
+          endAt: poll.endAt,
+          isExpired: poll.endAt ? new Date(poll.endAt).getTime() <= Date.now() : false,
           totalVotes,
           options: poll.options.map((option) => ({
             id: option.id,
             text: option.text,
+            emoji: option.emoji,
+            imageUrl: option.imageUrl,
             votes: option.votes,
             percentage: totalVotes > 0 ? (option.votes / totalVotes) * 100 : 0,
           })),
